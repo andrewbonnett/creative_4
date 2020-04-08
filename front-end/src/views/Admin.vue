@@ -19,7 +19,7 @@
         <h2>{{addItem.name}}</h2>
         <img :src="addItem.path" />
         <p>{{addItem.price}}</p>
-	      <p>{{addItem.description}}</p>
+        <p>{{addItem.description}}</p>
       </div>
     </div>
     <div class="heading">
@@ -28,9 +28,9 @@
     </div>
     <div class="edit">
       <div class="form">
-        <input v-model="findTitle" placeholder="Search">
+        <input v-model="findName" placeholder="Search">
         <div class="suggestions" v-if="suggestions.length > 0">
-          <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.title}}
+          <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.name}}
           </div>
         </div>
       </div>
@@ -58,18 +58,18 @@ export default {
     return {
       name: "",
       file: null,
-      price: null,
+      price: 0,
       description: "",
       addItem: null,
       items: [],
-      findTitle: "",
+      findName: "",
       findItem: null,
     }
   },
   computed: {
     suggestions() {
-      let items = this.items.filter(item => item.title.toLowerCase().startsWith(this.findTitle.toLowerCase()));
-      return items.sort((a, b) => a.title > b.title);
+      let items = this.items.filter(item => item.name.toLowerCase().startsWith(this.findName.toLowerCase()));
+      return items.sort((a, b) => a.name > b.name);
     }
   },
   created() {
@@ -80,6 +80,7 @@ export default {
       this.file = event.target.files[0]
     },
     async upload() {
+      try {
         const formData = new FormData();
         formData.append('photo', this.file, this.file.name)
         let r1 = await axios.post('/api/photos', formData);
@@ -90,19 +91,26 @@ export default {
           description: this.description,
         });
         this.addItem = r2.data;
-
+        /*
         this.name = "";
-	      this.description = "";
-        this.file = null;
-        this.price = null;
+        this.description = "";
+        this.price = 0;
+        */
+      } catch(error) {
+        console.log(error)
+      }
     },
     async getItems() {
+      try {
         let response = await axios.get("/api/items");
         this.items = response.data;
         return true;
+      } catch(error) {
+        console.log(error);
+      }
     },
     selectItem(item) {
-      this.findTitle = "";
+      this.findName = "";
       this.findItem = item;
     },
     async deleteItem(item) {

@@ -10,14 +10,14 @@ app.use(bodyParser.urlencoded({
 const mongoose = require('mongoose');
 
 // connect to the database
-mongoose.connect('mongodb://localhost:27017/museum', {
+mongoose.connect('mongodb://localhost:27017/moonstone', {
   useNewUrlParser: true
 });
 
 // Configure multer so that it will upload to '../front-en$
 const multer = require('multer')
 const upload = multer({
-  dest: '../front-end/public/images/products',
+  dest: '../front-end/public/images/products/',
   limits: {
     fileSize: 10000000
   }
@@ -44,7 +44,7 @@ app.post('/api/photos', upload.single('photo'), async (req, res) => {
     return res.sendStatus(400);
   }
   res.send({
-    path: "/images/" + req.file.filename
+    path: "/images/products/" + req.file.filename
   });
 });
 
