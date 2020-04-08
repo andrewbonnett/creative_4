@@ -43,7 +43,16 @@
 
   <!-- FOOTER-->
   <div class="footer container2">
-      <span>Drew Bonnett, Christian Lewis 2020. Please visit <a href="https://github.com/andrewbonnett/creative_3">Github</a> for the files associated with this site.</span>
+    <div class="row">
+      <div class="col-auto mr-auto">
+        <span>Drew Bonnett, Christian Lewis 2020. Please visit <a href="https://github.com/andrewbonnett/creative_4">Github</a> for the files associated with this site.</span>
+      </div>
+      <div class="col-auto">
+        <router-link to="/admin">
+          <a>Admin</a>
+        </router-link>
+      </div>
+    </div>
   </div>
   <!-- END FOOTER-->
 

@@ -1,6 +1,4 @@
 .DS_Store
-.browserslistrc
-.eslintrc.js
 node_modules
 /dist
 
