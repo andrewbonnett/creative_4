@@ -1,52 +1,54 @@
 <template>
-<div class="admin">
-  <h1>The Admin Page!</h1>
-    <div class="heading">
-      <div class="circle">1</div>
-      <h2>Add a Product</h2>
-    </div>
-    <div class="add">
-      <div class="form">
-        <input v-model="name" placeholder="Name">
-        <p></p>
-        <input type="file" name="photo" @change="fileChanged">
-        <input type="number" v-model="price" placeholder="Price">
-        <p></p>
-        <textarea v-model="description" cols=50 rows=3 placeholder="Description" ></textarea>
-        <button style="display: block" @click="upload">Upload</button>
+<div class="content">
+  <div class="admin">
+    <h1>The Admin Page!</h1>
+      <div class="heading">
+        <div class="circle">1</div>
+        <h2>Add a Product</h2>
       </div>
-      <div class="upload" v-if="addItem">
-        <h2>{{addItem.name}}</h2>
-        <img :src="addItem.path" />
-        <p>{{addItem.price}}</p>
-        <p>{{addItem.description}}</p>
-      </div>
-    </div>
-    <div class="heading">
-      <div class="circle">2</div>
-      <h2>Edit/Delete an Item</h2>
-    </div>
-    <div class="edit">
-      <div class="form">
-        <input v-model="findName" placeholder="Search">
-        <div class="suggestions" v-if="suggestions.length > 0">
-          <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.name}}
-          </div>
+      <div class="add">
+        <div class="form">
+          <input v-model="name" placeholder="Name">
+          <p></p>
+          <input type="file" name="photo" @change="fileChanged">
+          <input type="number" v-model="price" placeholder="Price">
+          <p></p>
+          <textarea v-model="description" cols=50 rows=3 placeholder="Description" ></textarea>
+          <button style="display: block" @click="upload">Upload</button>
+        </div>
+        <div class="upload" v-if="addItem">
+          <h2>{{addItem.name}}</h2>
+          <img :src="addItem.path" />
+          <p>{{addItem.price}}</p>
+          <p>{{addItem.description}}</p>
         </div>
       </div>
-      <div class="upload" v-if="findItem">
-        <input v-model="findItem.name">
-        <p></p>
-        <img :src="findItem.path" />
-        <input v-model="findItem.price">
-        <p></p>
-        <textarea v-model="findItem.description" cols=50 rows=4 placeholder="Description" ></textarea>
+      <div class="heading">
+        <div class="circle">2</div>
+        <h2>Edit/Delete an Item</h2>
       </div>
-      <div class="actions" v-if="findItem">
-        <button @click="deleteItem(findItem)">Delete</button>
-	<button @click="editItem(findItem)">Edit</button>
+      <div class="edit">
+        <div class="form">
+          <input v-model="findName" placeholder="Search">
+          <div class="suggestions" v-if="suggestions.length > 0">
+            <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.name}}
+            </div>
+          </div>
+        </div>
+        <div class="upload" v-if="findItem">
+          <input v-model="findItem.name">
+          <p></p>
+          <img :src="findItem.path" />
+          <input v-model="findItem.price">
+          <p></p>
+          <textarea v-model="findItem.description" cols=50 rows=4 placeholder="Description" ></textarea>
+        </div>
+        <div class="actions" v-if="findItem">
+          <button @click="deleteItem(findItem)">Delete</button>
+    <button @click="editItem(findItem)">Edit</button>
+        </div>
       </div>
-    </div>
+  </div>
 </div>
 </template>
 
@@ -58,7 +60,7 @@ export default {
     return {
       name: "",
       file: null,
-      price: 0,
+      price: null,
       description: "",
       addItem: null,
       items: [],
@@ -134,6 +136,67 @@ export default {
 </script>
 
 <style scoped>
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  background: #fff;
+  padding: 0px;
+  margin: 0px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  padding: 10px 100px 0px 100px;
+  background-color: #5BDEFF;
+  color: #1C454F;
+}
+
+.title {
+  margin-top: 5px;
+}
+
+.title h1 {
+  font-size: 30px;
+}
+
+.content {
+  padding: 20px 100px;
+  min-height: 500px;
+}
+
+/* Footer */
+.footer {
+  height: 50px;
+  padding: 20px 100px 0px 100px;
+  background: #e3e3e3;
+  font-size: 12px;
+}
+
+.footer a {
+  color: #000;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+h2 {
+  font-size: 14px;
+}
+
+.content {
+  display: block;
+  padding: 20px 100px;
+  min-height: 500px;
+  font-family: Montserrat,sans-serif;
+  font-size: 16px;
+}
+
 .image h2 {
   font-style: italic;
   font-size: 1em;
@@ -157,8 +220,7 @@ export default {
 
 .circle {
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
+  width: 40px;
   padding: 8px;
   background: #333;
   color: #fff;

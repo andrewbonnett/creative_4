@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .main-page-container {
   padding-top: 35px;
   padding-bottom: 35px;

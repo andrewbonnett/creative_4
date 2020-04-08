@@ -62,7 +62,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .sidebar-helper {
     display: flex;
     justify-content: space-between;

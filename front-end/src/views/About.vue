@@ -12,7 +12,7 @@
 </div>
 </template>
 
-<style>
+<style scoped>
   .about-container {
     margin-top: 50px;
     margin-left: 350px;
