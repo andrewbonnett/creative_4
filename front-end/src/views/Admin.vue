@@ -8,10 +8,11 @@
       </div>
       <div class="add">
         <div class="form">
-          <input v-model="name" placeholder="Name">
+          <input v-model="name" placeholder="Product Name">
+          <p></p>
+          <input type="number" v-model="price" placeholder="Price">
           <p></p>
           <input type="file" name="photo" @change="fileChanged">
-          <input type="number" v-model="price" placeholder="Price">
           <p></p>
           <textarea v-model="description" cols=50 rows=3 placeholder="Description" ></textarea>
           <button style="display: block" @click="upload">Upload</button>
@@ -39,6 +40,7 @@
           <input v-model="findItem.name">
           <p></p>
           <img :src="findItem.path" />
+          <p></p>
           <input v-model="findItem.price">
           <p></p>
           <textarea v-model="findItem.description" cols=50 rows=4 placeholder="Description" ></textarea>
@@ -92,12 +94,12 @@ export default {
           price: this.price,
           description: this.description,
         });
+
         this.addItem = r2.data;
-        /*
         this.name = "";
         this.description = "";
-        this.price = 0;
-        */
+        this.price = null;
+
       } catch(error) {
         console.log(error)
       }
@@ -124,6 +126,7 @@ export default {
     async editItem(item) {
         await axios.put("/api/items/" + item._id, {
           name: this.findItem.name,
+          path: this.findItem.path,
           price: this.findItem.price,
           description: this.findItem.description,
         });
@@ -195,6 +198,11 @@ h2 {
   min-height: 500px;
   font-family: Montserrat,sans-serif;
   font-size: 16px;
+
+  width: 75%;
+  margin-bottom: 250px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .image h2 {
