@@ -20,7 +20,7 @@
         <div class="upload" v-if="addItem">
           <h2>{{addItem.name}}</h2>
           <img :src="addItem.path" />
-          <p>{{addItem.price}}</p>
+          <p>${{addItem.price.toFixed(2)}}</p>
           <p>{{addItem.description}}</p>
         </div>
       </div>

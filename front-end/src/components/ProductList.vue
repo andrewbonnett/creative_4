@@ -1,13 +1,14 @@
 <template>
 <div class="wrapper">
   <div class="products">
-    <div class="product" v-for="product in products" :key="product.id">
+    <div class="product" v-for="item in items" :key="item.id">
       <div class="image">
-        <img :src="'/images/products/'+product.image">
+        <img :src="item.path">
       </div>
       <div class="info">
-        <h1>{{product.name}}</h1>
-        <h2 class="price">${{product.price.toFixed(2)}}</h2>
+        <h1>{{item.name}}</h1>
+        <h2 class="price">${{item.price.toFixed(2)}}</h2>
+        <!--INSERT DESCRIPTION?-->
         <button class="btn btn-outline-secondary btn-sm" @click="addToCart(product)">Add to Cart</button>
       </div>
     </div>
@@ -16,12 +17,28 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'ProductList',
-  props: {
-    products: Array
+  data() {
+    return {
+     items: [],
+    }
+  },
+  created() {
+    this.getItems();
   },
   methods: {
+    async getItems() {
+      try {
+        let response = await axios.get("/api/items");
+        this.items = response.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    //NOT EDITED YET
     addToCart(product) {
       if (this.$root.$data.cart.includes(product)) {
         let index = this.$root.$data.cart.indexOf(product);
