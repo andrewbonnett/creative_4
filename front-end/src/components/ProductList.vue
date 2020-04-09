@@ -9,7 +9,7 @@
         <h1>{{item.name}}</h1>
         <h2 class="price">${{item.price.toFixed(2)}}</h2>
         <!--INSERT DESCRIPTION?-->
-        <button class="btn btn-outline-secondary btn-sm" @click="addToCart(product)">Add to Cart</button>
+        <button class="btn btn-outline-secondary btn-sm" @click="addToCart(item)">Add to Cart</button>
       </div>
     </div>
   </div>
@@ -23,6 +23,8 @@ export default {
   data() {
     return {
      items: [],
+     cartItems: [],
+     addItem: null,
     }
   },
   created() {
@@ -38,8 +40,36 @@ export default {
         console.log(error);
       }
     },
+
+    async getCartItems() {
+      try {
+        let response = await axios.get("/api/cartItems");
+        this.cartItems = response.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async addToCart(item) {
+      //need to check by ?item name? if item already exists in cartItems, if so, update quantity
+
+      try {
+        let response = await axios.post('/api/cartItems', {
+          name: item.name,
+          path: item.path,
+          price: item.price,
+          quantity: 1,
+        });
+
+        this.addItem = response.data;
+
+      } catch(error) {
+        console.log(error)
+      }
+    },
     //NOT EDITED YET
-    addToCart(product) {
+    async addToCartOldVerion(product) {
       if (this.$root.$data.cart.includes(product)) {
         let index = this.$root.$data.cart.indexOf(product);
         this.$root.$data.quantity[index] = this.$root.$data.quantity[index] + 1;

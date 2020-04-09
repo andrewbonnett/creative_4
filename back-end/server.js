@@ -23,7 +23,7 @@ const upload = multer({
   }
 });
 
-// Create a scheme for items in the museum: a title and a path to an image.
+// Create a scheme for items in moonstone: a title and a path to an image.
 const itemSchema = new mongoose.Schema({
   name: String,
   //gender: String,
@@ -33,8 +33,16 @@ const itemSchema = new mongoose.Schema({
   description: String,
 });
 
+const cartItemSchema = new mongoose.Schema({
+  name: String,
+  price: Number,
+  path: String, //image path
+  quantity: Number,
+});
+
 // Create a model for items in the museum.
 const Item = mongoose.model('Item', itemSchema);
+const CartItem = mongoose.model('CartItem', cartItemSchema);
 
 // Upload a photo. Uses the multer middleware for the upload and then returns
 // the path where the photo is stored in the file system.
@@ -48,7 +56,7 @@ app.post('/api/photos', upload.single('photo'), async (req, res) => {
   });
 });
 
-// Create a new item in the museum: takes a title and a path to an image.
+// Create a new item
 app.post('/api/items', async (req, res) => {
   const item = new Item({
     name: req.body.name,
@@ -67,10 +75,38 @@ app.post('/api/items', async (req, res) => {
   }
 });
 
-// Get a list of all of the items in the museum.
+//Create a new item in the cart
+app.post('/api/cartItems', async (req, res) => {
+  const cartItem = new CartItem({
+    name: req.body.name,
+    price: req.body.price,
+    path: req.body.path,
+    quantity: 1,
+  });
+  try {
+    await cartItem.save();
+    res.send(cartItem);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+// Get a list of all of the items.
 app.get('/api/items', async (req, res) => {
   try {
     let items = await Item.find();
+    res.send(items);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+//Get a list of all cartItems
+app.get('/api/cartItems', async (req, res) => {
+  try {
+    let items = await CartItem.find();
     res.send(items);
   } catch (error) {
     console.log(error);
