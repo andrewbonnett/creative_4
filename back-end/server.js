@@ -30,14 +30,12 @@ const itemSchema = new mongoose.Schema({
   //category: [Array],
   price: Number,
   path: String, //image path
-  description: String,
 });
 
 const cartItemSchema = new mongoose.Schema({
   name: String,
-  price: Number,
   path: String, //image path
-  quantity: Number,
+  price: Number,
 });
 
 // Create a model for items in the museum.
@@ -81,7 +79,6 @@ app.post('/api/cartItems', async (req, res) => {
     name: req.body.name,
     price: req.body.price,
     path: req.body.path,
-    quantity: 1,
   });
   try {
     await cartItem.save();
@@ -118,6 +115,18 @@ app.delete('/api/items/:id', async (req, res) => {
   try {
     await Item.deleteOne({
       _id: req.params.id
+    });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+app.delete('/api/cartItems/:name', async (req, res) => {
+  try {
+    await CartItem.deleteMany({
+      name: req.params.name
     });
     res.sendStatus(200);
   } catch (error) {

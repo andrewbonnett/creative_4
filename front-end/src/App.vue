@@ -61,13 +61,23 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
+
   computed: {
     numCartItems() {
-      let total = 0;
-      for (let i = 0; i < this.$root.$data.quantity.length; i++)
-        total += this.$root.$data.quantity[i];
-      return total;
+      return this.$root.$data.cart.length;
+    },
+  },
+  methods: {
+    async getCartItems() {
+      try {
+        let response = await axios.get("/api/cartItems");
+        this.$root.$data.cart = response.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
     },
   }
 }

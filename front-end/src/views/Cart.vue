@@ -7,7 +7,7 @@
 
       <hr>
         <div class="row">
-          <div class="cart-text col-sm">Item<a v-if="this.$root.$data.cart.length > 1">s</a></div>
+          <div class="cart-text col-sm">Item<a v-if="this.cartItems.length > 1">s</a></div>
           <div class="cart-text col-sm">
           </div>
           <div class="cart-text-2 col-sm">
@@ -18,10 +18,10 @@
         </div>
       <hr>
 
-      <div v-for="(item, index) in this.$root.$data.cart" :key="item.id">
+      <div v-for="(item, index) in this.cartItems" :key="item.name">
         <div class="row">
           <div class="col-sm">
-            <img :src="'/images/products/'+item.image" width="100%">
+            <img :src=item.path width="100%">
           </div>
           <div class="cart-text col-sm">
             {{item.name}}
@@ -30,10 +30,10 @@
             ${{item.price.toFixed(2)}}
           </div>
           <div class="cart-text-2 col-sm">
-            {{$root.$data.quantity[index]}}  <!--FIX QUANTITY -->
+            {{quantities[index]}}  <!--FIX QUANTITY -->
           </div>
           <div class="cart-text-2 col-sm">
-            <button class="btn btn-outline-secondary" @click="removeFromCart(item.id)">Remove Item</button>
+            <button class="btn btn-outline-secondary" @click="removeFromCart(item.name)">Remove Item</button>
           </div>
         </div>
         <hr>
@@ -55,29 +55,80 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'Cart',
+  data () {
+    return {
+      cartItems: [],
+      quantities: []
+    }
+  },
+  created() {
+    this.getCartItems();
+  },
   methods: {
-    removeFromCart(id) {
-      for (let i = 0; i < this.$root.$data.cart.length; i++) {
-        if (this.$root.$data.cart[i].id === id) {
-          this.$root.$data.quantity .splice(i,1);
-          this.$root.$data.cart.splice(i,1);
+    async getCartItems() {
+      try {
+        let response = await axios.get("/api/cartItems");
+        this.$root.$data.cart = response.data;
+        this.getQuantities();
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getCartItemsForNum() {
+      try {
+        let response = await axios.get("/api/cartItems");
+        this.$root.$data.cart = response.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    removeFromCart(name) {
+      for (let i = 0; i < this.cartItems.length; i++) {
+        if (this.cartItems[i].name === name) {
+          this.deleteItem(this.cartItems[i]);
+          this.quantities.splice(i,1);
+          this.cartItems.splice(i,1);
         }
+      }
+      this.getCartItemsForNum();
+    },
+    async deleteItem(item) {
+        await axios.delete("/api/cartItems/" + item.name);
+        return true;
+    },
+    getQuantities() {
+      var flag = true;
+      for (let i = 0; i < this.$root.$data.cart.length; i++) {
+        for (let j = 0; j < this.cartItems.length; j++) {
+          if (this.$root.$data.cart[i].name === this.cartItems[j].name) {
+            this.quantities[j]++;
+            flag = false;
+          }
+        }
+        if (flag === true) {
+          this.cartItems.push(this.$root.$data.cart[i]);
+          this.quantities.push(1);
+        } else
+        flag = true;
       }
     }
   },
   computed: {
     numQuantity() {
       let total = 0;
-      for (let i = 0; i < this.$root.$data.quantity.length; i++)
-        total += this.$root.$data.quantity[i];
+      for (let i = 0; i < this.quantities.length; i++)
+        total += this.quantities[i];
       return total;
     },
     totalPrice() {
       let total = 0;
-      for (let i = 0; i < this.$root.$data.quantity.length; i++)
-        total += this.$root.$data.quantity[i] * this.$root.$data.cart[i].price;
+      for (let i = 0; i < this.quantities.length; i++)
+        total += this.quantities[i] * this.cartItems[i].price;
       return total;
     }
   }

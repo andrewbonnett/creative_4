@@ -39,14 +39,14 @@ export default {
     ProductList
   },
   data() {
-  return {
-    searchText: '', 
-    filter: '',
-  }
+    return {
+      searchText: '', 
+      filter: '',
+    }
   },
   computed: {
     products() {
-        return this.$root.$data.products.filter(product => (product.name.toLowerCase().search(this.searchText)) >= 0 && product.category.includes(this.filter));
+      return this.$root.$data.shopItems.filter(item => item.name.toLowerCase().search(this.searchText) >= 0);
     }
   },
   methods: {

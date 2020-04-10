@@ -14,14 +14,12 @@
           <p></p>
           <input type="file" name="photo" @change="fileChanged">
           <p></p>
-          <textarea v-model="description" cols=50 rows=3 placeholder="Description" ></textarea>
-          <button style="display: block" @click="upload">Upload</button>
+          <button style="display: block" class ="btn btn-secondary" @click="upload">Upload</button>
         </div>
         <div class="upload" v-if="addItem">
           <h2>{{addItem.name}}</h2>
           <img :src="addItem.path" />
           <p>${{addItem.price.toFixed(2)}}</p>
-          <p>{{addItem.description}}</p>
         </div>
       </div>
       <div class="heading">
@@ -43,7 +41,6 @@
           <p></p>
           <input v-model="findItem.price">
           <p></p>
-          <textarea v-model="findItem.description" cols=50 rows=4 placeholder="Description" ></textarea>
         </div>
         <div class="actions" v-if="findItem">
           <button @click="deleteItem(findItem)">Delete</button>
