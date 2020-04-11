@@ -46,7 +46,7 @@
       </div>
       <div class="heading">
         <div class="circle">2</div>
-        <h2 style="font-size: 18px">Edit/Delete an Item</h2>
+        <h2 style="font-size: 18px">Edit/Delete a Product</h2>
       </div>
       <div class="edit">
         <div class="form">
