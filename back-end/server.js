@@ -59,7 +59,7 @@ app.post('/api/items', async (req, res) => {
     name: req.body.name,
     price: req.body.price,
     path: req.body.path,
-    category: req.body.categoryStrings,
+    category: req.body.category,
   });
   try {
     await item.save();
