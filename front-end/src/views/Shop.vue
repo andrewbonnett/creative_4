@@ -16,18 +16,13 @@
       <hr/>
       <span class="bucket-heading">Category</span>
 
-      <!-- This is working but looks ugly -->
-      <button @click="setFilter('New Arrivals')">New Arrivals</button>
-
-      <!-- ERROR These link are redirecting to the home page rather than setting filter -->
-      <!-- Switch to button class? -->
       <ul style="list-style-type: none;padding-left: 0px;">
-        <li class="li-sidebar"><a @click="setFilter('New Arrivals')" href="#">New Arrivals</a></li>
-        <li class="li-sidebar"><a @click="setFilter('Popular')" href="#">Popular</a></li>
-        <li class="li-sidebar"><a @click="setFilter('Shirts')" href="#">Shirts</a></li>
-        <li class="li-sidebar"><a @click="setFilter('Swimwear')" href="#">Swimwear</a></li>
-        <li class="li-sidebar"><a @click="setFilter('Jackets')" href="#">Jackets</a></li>
-        <li class="li-sidebar line"><a @click="setFilter('')" href="#">See All</a></li>
+        <li class="li-sidebar"><a @click="setFilter('New Arrivals')" href="#!">New Arrivals</a></li>
+        <li class="li-sidebar"><a @click="setFilter('Popular')" href="#!">Popular</a></li>
+        <li class="li-sidebar"><a @click="setFilter('Shirts')" href="#!">Shirts</a></li>
+        <li class="li-sidebar"><a @click="setFilter('Swimwear')" href="#!">Swimwear</a></li>
+        <li class="li-sidebar"><a @click="setFilter('Jackets')" href="#!">Jackets</a></li>
+        <li class="li-sidebar line"><a @click="setFilter('')" href="#!">See All</a></li>
       </ul>
     </div>
     <div class="main">

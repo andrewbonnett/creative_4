@@ -63,11 +63,13 @@
 <script>
 import axios from 'axios';
 export default {
-
   computed: {
     numCartItems() {
       return this.$root.$data.cart.length;
     },
+  },
+  created() {
+    this.getCartItems();
   },
   methods: {
     async getCartItems() {
