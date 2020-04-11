@@ -25,31 +25,44 @@
       </ul>
     </div>
     <div class="main">
-      <ProductList :products="products" />
+      <ItemList :items="items" />
     </div>
   </div>
 </div>
 </template>
 
 <script>
-import ProductList from "../components/ProductList.vue"
+import ItemList from "../components/ProductList.vue"
+import axios from 'axios';
 export default {
   name: 'Home',
   components: {
-    ProductList
+    ItemList
   },
   data() {
     return {
-      searchText: '', 
+      searchText: '',
       filter: '',
     }
   },
+  created() {
+    this.getItems();
+  },
   computed: {
-    products() {
+    items() {
       return this.$root.$data.shopItems.filter(item => item.name.toLowerCase().search(this.searchText) >= 0);
     }
   },
   methods: {
+    async getItems() {
+      try {
+        let response = await axios.get("/api/items");
+        this.$root.$data.shopItems = response.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     setFilter(key) {
       if (this.filter === key) {
         this.filter = '';

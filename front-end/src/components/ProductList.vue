@@ -1,7 +1,7 @@
 <template>
 <div class="wrapper">
   <div class="products">
-    <div class="product" v-for="item in $root.$data.shopItems" :key="item.id">
+    <div class="product" v-for="item in items" :key="item.id">
       <div class="image">
         <img :src="item.path">
       </div>
@@ -18,25 +18,16 @@
 <script>
 import axios from 'axios';
 export default {
-  name: 'ProductList',
+  name: 'ItemList',
+  props: {
+    items: Array
+  },
   data() {
     return {
      addItem: null,
     }
   },
-  created() {
-    this.getItems();
-  },
   methods: {
-    async getItems() {
-      try {
-        let response = await axios.get("/api/items");
-        this.$root.$data.shopItems = response.data;
-        return true;
-      } catch (error) {
-        console.log(error);
-      }
-    },
     async getCartItems() {
       try {
         let response = await axios.get("/api/cartItems");
