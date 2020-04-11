@@ -4,7 +4,7 @@
     <h1>The Admin Page!</h1>
       <div class="heading">
         <div class="circle">1</div>
-        <h2>Add a Product</h2>
+        <h2 style="font-size: 18px">Add a Product</h2>
       </div>
       <div class="add">
         <div class="form">
@@ -14,6 +14,28 @@
           <p></p>
           <input type="file" name="photo" @change="fileChanged">
           <p></p>
+          <p style="margin-bottom: 8px; font-size: 17px">Add Filters:</p>
+          <!--Checkboxes for filters-->
+          <div class="checkbox">
+            <input type="checkbox" id="new arrivals" v-model="categoryBools[0]">
+            <label class="checkbox-spacing" for="new arrivals">New Arrivals</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="popular" v-model="categoryBools[1]">
+            <label class="checkbox-spacing" for="popular">Popular</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="shirts" v-model="categoryBools[2]">
+            <label class="checkbox-spacing" for="shirts">Shirts</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="swimwear" v-model="categoryBools[3]">
+            <label class="checkbox-spacing" for="swimwear">Swimwear</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="jackets" v-model="categoryBools[4]">
+            <label class="checkbox-spacing" for="jackets">Jackets</label>
+          </div>
           <button style="display: block" class ="btn btn-secondary" @click="upload">Upload</button>
         </div>
         <div class="upload" v-if="addItem">
@@ -24,7 +46,7 @@
       </div>
       <div class="heading">
         <div class="circle">2</div>
-        <h2>Edit/Delete an Item</h2>
+        <h2 style="font-size: 18px">Edit/Delete an Item</h2>
       </div>
       <div class="edit">
         <div class="form">
@@ -60,11 +82,12 @@ export default {
       name: "",
       file: null,
       price: null,
-      description: "",
       addItem: null,
       items: [],
       findName: "",
       findItem: null,
+      categoryBools: [true, false, false, false, false],
+      categoryStrings: [],
     }
   },
   computed: {
@@ -80,21 +103,35 @@ export default {
     fileChanged(event) {
       this.file = event.target.files[0]
     },
+    getCategoryStrings() {
+        if (this.categoryBools[0])
+          this.categoryStrings.push("New Arrivals")
+        if (this.categoryBools[1])
+          this.categoryStrings.push("Popular")
+        if (this.categoryBools[2])
+          this.categoryStrings.push("Shirts")
+        if (this.categoryBools[3])
+          this.categoryStrings.push("Swimwear")
+        if (this.categoryBools[4])
+          this.categoryStrings.push("Jackets")
+        this.categoryStrings.push(""); //push the empty string for all items
+    },
     async upload() {
+        this.getCategoryStrings();
       try {
-        const formData = new FormData();
-        formData.append('photo', this.file, this.file.name)
-        let r1 = await axios.post('/api/photos', formData);
+        const photoData = new FormData();
+        photoData.append('photo', this.file, this.file.name)
+        let r1 = await axios.post('/api/photos', photoData);
         let r2 = await axios.post('/api/items', {
           name: this.name,
           path: r1.data.path,
           price: this.price,
-          description: this.description,
+          category: this.categoryStrings, //error occurring here
         });
 
         this.addItem = r2.data;
         this.name = "";
-        this.description = "";
+        this.categoryBools = [true, false, false, false, false];
         this.price = null;
 
       } catch(error) {
@@ -267,5 +304,13 @@ button {
 .suggestion:hover {
   background-color: #5BDEFF;
   color: #fff;
+}
+
+.checkbox {
+  margin: .4rem;
+}
+
+.checkbox-spacing {
+  margin-left: .4rem
 }
 </style>

@@ -51,19 +51,6 @@ export default {
         console.log(error)
       }
     },
-    //NOT EDITED YET
-    // async addToCartOldVerion(product) {
-    //   if (this.$root.$data.cart.includes(product)) {
-    //     let index = this.$root.$data.cart.indexOf(product);
-    //     this.$root.$data.quantity[index] = this.$root.$data.quantity[index] + 1;
-    //     this.$root.$data.quantity.push(0);
-    //     this.$root.$data.quantity.pop();
-    //   }
-    //   else {
-    //     this.$root.$data.cart.push(product);
-    //     this.$root.$data.quantity.push(1);
-    //   }
-    // },
   },
 }
 </script>

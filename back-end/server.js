@@ -26,10 +26,9 @@ const upload = multer({
 // Create a scheme for items in moonstone: a title and a path to an image.
 const itemSchema = new mongoose.Schema({
   name: String,
-  //gender: String,
-  //category: [Array],
   price: Number,
   path: String, //image path
+  category: [String],
 });
 
 const cartItemSchema = new mongoose.Schema({
@@ -58,11 +57,9 @@ app.post('/api/photos', upload.single('photo'), async (req, res) => {
 app.post('/api/items', async (req, res) => {
   const item = new Item({
     name: req.body.name,
-    //gender: "",
-    //category: ??syntax??
     price: req.body.price,
     path: req.body.path,
-    description: req.body.description,
+    category: req.body.categoryStrings,
   });
   try {
     await item.save();
@@ -141,11 +138,9 @@ app.put('/api/items/:id', async (req, res) => {
       _id: req.params.id
     });
     item.name = req.body.name;
-    //item.gender
-    //item.category
     item.price = req.body.price;
     item.path = req.body.path;
-    item.description = req.body.description;
+    item.category = req.body.category;
     await item.save();
     res.sendStatus(200);
   } catch (error) {

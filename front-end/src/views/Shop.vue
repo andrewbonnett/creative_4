@@ -16,12 +16,12 @@
       <hr/>
       <span class="bucket-heading">Category</span>
       <ul style="list-style-type: none;padding-left: 0px;">
-          <li class="li-sidebar"><a @click="setFilter('New Arrivals')" href="#">New Arrivals</a></li>
-          <li class="li-sidebar"><a @click="setFilter('Popular')" href="#">Popular</a></li>
-          <li class="li-sidebar"><a @click="setFilter('Shirts')" href="#">Shirts</a></li>
-          <li class="li-sidebar"><a @click="setFilter('Swimwear')" href="#">Swimwear</a></li>
-          <li class="li-sidebar"><a @click="setFilter('Jackets')" href="#">Jackets</a></li>
-          <li class="li-sidebar line"><a @click="setFilter('')" href="#">See All</a></li>
+        <li class="li-sidebar"><a @click="setFilter('New Arrivals')" href="#">New Arrivals</a></li>
+        <li class="li-sidebar"><a @click="setFilter('Popular')" href="#">Popular</a></li>
+        <li class="li-sidebar"><a @click="setFilter('Shirts')" href="#">Shirts</a></li>
+        <li class="li-sidebar"><a @click="setFilter('Swimwear')" href="#">Swimwear</a></li>
+        <li class="li-sidebar"><a @click="setFilter('Jackets')" href="#">Jackets</a></li>
+        <li class="li-sidebar line"><a @click="setFilter('')" href="#">See All</a></li>
       </ul>
     </div>
     <div class="main">
@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     items() {
-      return this.$root.$data.shopItems.filter(item => item.name.toLowerCase().search(this.searchText) >= 0);
+      return this.$root.$data.shopItems.filter(item => (item.name.toLowerCase().search(this.searchText)) >= 0 && item.category.includes(this.filter));
     }
   },
   methods: {
