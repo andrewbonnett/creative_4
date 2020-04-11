@@ -16,8 +16,11 @@
       <hr/>
       <span class="bucket-heading">Category</span>
 
+      <!-- This is working but looks ugly -->
+      <button @click="setFilter('New Arrivals')">New Arrivals</button>
+
       <!-- ERROR These link are redirecting to the home page rather than setting filter -->
-      <!-- Switch to button class? https://www.w3schools.com/howto/howto_js_filter_elements.asp -->
+      <!-- Switch to button class? -->
       <ul style="list-style-type: none;padding-left: 0px;">
         <li class="li-sidebar"><a @click="setFilter('New Arrivals')" href="#">New Arrivals</a></li>
         <li class="li-sidebar"><a @click="setFilter('Popular')" href="#">Popular</a></li>
