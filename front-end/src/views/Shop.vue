@@ -15,7 +15,6 @@
       More filters coming soon to Moonstone.
       <hr/>
       <span class="bucket-heading">Category</span>
-
       <ul style="list-style-type: none;padding-left: 0px;">
         <li class="li-sidebar"><a @click="setFilter('New Arrivals')" href="#!">New Arrivals</a></li>
         <li class="li-sidebar"><a @click="setFilter('Popular')" href="#!">Popular</a></li>

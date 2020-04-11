@@ -65,7 +65,8 @@ export default {
     }
   },
   created() {
-    this.getCartItems();
+    if (!this.$root.$data.cart.length === 0)
+      this.getCartItems();
   },
   methods: {
     async getCartItems() {
