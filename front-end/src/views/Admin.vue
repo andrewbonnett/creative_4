@@ -63,6 +63,29 @@
           <p></p>
           <input v-model="findItem.price">
           <p></p>
+          <p style="margin-bottom: 8px; font-size: 17px">Modify Filters:</p>
+          <!--Checkboxes for filters-->
+          <div class="checkbox">
+            <input type="checkbox" id="new arrivals" v-model="findItem.categoryBools[0]">
+            <label class="checkbox-spacing" for="new arrivals">New Arrivals</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="popular" v-model="findItem.categoryBools[1]">
+            <label class="checkbox-spacing" for="popular">Popular</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="shirts" v-model="findItem.categoryBools[2]">
+            <label class="checkbox-spacing" for="shirts">Shirts</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="swimwear" v-model="findItem.categoryBools[3]">
+            <label class="checkbox-spacing" for="swimwear">Swimwear</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="jackets" v-model="findItem.categoryBools[4]">
+            <label class="checkbox-spacing" for="jackets">Jackets</label>
+          </div>
+        </div>
         </div>
         <div class="actions" v-if="findItem">
           <button @click="deleteItem(findItem)">Delete</button>
@@ -70,7 +93,6 @@
         </div>
       </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -92,7 +114,7 @@ export default {
   },
   computed: {
     suggestions() {
-      let items = this.items.filter(item => item.name.toLowerCase().startsWith(this.findName.toLowerCase()));
+      let items = this.$root.$data.shopItems.filter(item => item.name.toLowerCase().startsWith(this.findName.toLowerCase()));
       return items.sort((a, b) => a.name > b.name);
     }
   },
@@ -103,21 +125,23 @@ export default {
     fileChanged(event) {
       this.file = event.target.files[0]
     },
-    getCategoryStrings() {
-        if (this.categoryBools[0])
+    addCategoryStrings(boolArray) {
+        while(this.categoryStrings.length > 0) //empty the array
+          this.categoryStrings.pop();
+        if (boolArray[0])
           this.categoryStrings.push("New Arrivals")
-        if (this.categoryBools[1])
+        if (boolArray[1])
           this.categoryStrings.push("Popular")
-        if (this.categoryBools[2])
+        if (boolArray[2])
           this.categoryStrings.push("Shirts")
-        if (this.categoryBools[3])
+        if (boolArray[3])
           this.categoryStrings.push("Swimwear")
-        if (this.categoryBools[4])
+        if (boolArray[4])
           this.categoryStrings.push("Jackets")
         this.categoryStrings.push(""); //push the empty string for all items
     },
     async upload() {
-        this.getCategoryStrings();
+        this.addCategoryStrings(this.categoryBools);
       try {
         const photoData = new FormData();
         photoData.append('photo', this.file, this.file.name)
@@ -126,14 +150,15 @@ export default {
           name: this.name,
           path: r1.data.path,
           price: this.price,
-          category: this.categoryStrings, //error occurring here
+          category: this.categoryStrings,
+          categoryBools: this.categoryBools,
         });
 
         this.addItem = r2.data;
         this.name = "";
         this.categoryBools = [true, false, false, false, false];
         this.price = null;
-
+        this.getItems();
       } catch(error) {
         console.log(error)
       }
@@ -141,7 +166,7 @@ export default {
     async getItems() {
       try {
         let response = await axios.get("/api/items");
-        this.items = response.data;
+        this.$root.$data.shopItems = response.data;
         return true;
       } catch(error) {
         console.log(error);
@@ -158,11 +183,14 @@ export default {
         return true;
     },
     async editItem(item) {
+        this.addItem = null;
+        this.addCategoryStrings(this.findItem.categoryBools);
         await axios.put("/api/items/" + item._id, {
           name: this.findItem.name,
           path: this.findItem.path,
           price: this.findItem.price,
-          description: this.findItem.description,
+          category: this.categoryStrings,
+          categoryBools: this.findItem.categoryBools,
         });
         this.findItem = null;
         this.getItems();

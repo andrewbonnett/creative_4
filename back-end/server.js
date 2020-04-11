@@ -29,6 +29,7 @@ const itemSchema = new mongoose.Schema({
   price: Number,
   path: String, //image path
   category: [String],
+  categoryBools: [Boolean],
 });
 
 const cartItemSchema = new mongoose.Schema({
@@ -60,6 +61,7 @@ app.post('/api/items', async (req, res) => {
     price: req.body.price,
     path: req.body.path,
     category: req.body.category,
+    categoryBools: req.body.categoryBools,
   });
   try {
     await item.save();
@@ -141,6 +143,7 @@ app.put('/api/items/:id', async (req, res) => {
     item.price = req.body.price;
     item.path = req.body.path;
     item.category = req.body.category;
+    item.categoryBools = req.body.categoryBools;
     await item.save();
     res.sendStatus(200);
   } catch (error) {
